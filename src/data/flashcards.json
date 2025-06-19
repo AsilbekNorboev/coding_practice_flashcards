@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "unit": "Linked Lists",
+    "difficulty": "standard",
+    "questionText": "Explain how to reverse a singly linked list in-place.",
+    "hints": [
+      "Think about using three pointers: prev, curr, next.",
+      "You need to update the `next` pointer of each node.",
+      "At the end, `prev` will be the new head."
+    ],
+    "solutionCode": "```python\ndef reverse_list(head):\n    prev = None\n    curr = head\n    while curr:\n        nxt = curr.next\n        curr.next = prev\n        prev = curr\n        curr = nxt\n    return prev\n```"
+  },
+  {
+    "id": 2,
+    "unit": "Dynamic Programming",
+    "difficulty": "advanced",
+    "questionText": "Given a list of coin denominations and a target amount, find the number of ways to make change.",
+    "hints": [
+      "Use a DP array of length amount+1.",
+      "Initialize dp[0] = 1.",
+      "Iterate coins outer, amounts inner."
+    ],
+    "solutionCode": "```python\ndef coin_change(coins, amount):\n    dp = [0] * (amount+1)\n    dp[0] = 1\n    for coin in coins:\n        for x in range(coin, amount+1):\n            dp[x] += dp[x-coin]\n    return dp[amount]\n```"
+  }
+]
