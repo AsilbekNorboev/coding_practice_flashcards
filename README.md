@@ -13,6 +13,50 @@ Stuff I am working on
 - also track which questions i have done, so add a button 'completed', which adds to this list(keep count how many times i have done it also)
 - maybe have an algorithm where the questions asked are the ones where I haven't worked on as much
 
+What ChatGPT recommended:
+Spaced-Repetition Scheduling
+• Implement the Leitner system or a basic SM-2 algorithm so cards you struggle with reappear sooner, while the ones you know well get pushed farther out.
+• Track a “next review” timestamp in each card’s state and use that to filter which cards are shown in each session.
+
+Performance Tracking & Analytics
+• Record how long it takes you to answer each card, whether you needed hints, and if your solution passes a simple correctness check.
+• Show you weekly stats: total reviews, accuracy rate, average response time, and hardest cards.
+
+Pass/Fail or Self-Grading Buttons
+• After showing the solution, give “Easy / Hard / Fail” buttons. Use that feedback to adjust each card’s review interval automatically.
+
+Persist State in LocalStorage
+• Save your userCode, review dates, and performance metrics in localStorage so your progress carries over between visits.
+
+Quiz & Test Modes
+• Add a mode that hides the code-editor entirely and asks you to type answers in a plain input box—good for drilling recall under pressure.
+• Or a timed “challenge mode” where you get X seconds per card.
+
+Structured Decks & Tagging
+• Let you tag cards with topics (e.g. “DP”, “Linked List”) and then focus a session on just one topic.
+• Provide filters for tags, difficulty levels, or “due now” cards.
+
+Import / Export Functionality
+• Enable you to import new decks as JSON or export your current deck and progress so you can share or back up your work.
+
+Hints Hierarchy & Reveal Steps
+• Break hints into multiple tiers—“Hint 1” shows first, then “Hint 2” if you still need help, and so on.
+• Optionally reveal the solution in smaller code snippets (“Show next line”) to guide you step-by-step.
+
+Interactive Test Cases
+• Let you run your code against pre-defined test cases right in the browser. You could use a lightweight Python interpreter in JS (like Pyodide) or send snippets to a backend.
+
+Gamification Elements
+• Give yourself points, badges, or “streak” counters for daily practice.
+• Leaderboards (even if it’s just you vs. you) can be surprisingly motivating.
+
+Theming & Accessibility
+• Dark mode, adjustable font sizes, and high-contrast themes to reduce eye strain during long study sessions.
+• Keyboard shortcuts for “next,” “hint,” and “show solution” to keep your hands on the keys.
+
+Audio Narration
+• Use the Web Speech API to read the question prompt aloud—great for auditory learners.
+
 
 ## 🚀 Quick Start
 
