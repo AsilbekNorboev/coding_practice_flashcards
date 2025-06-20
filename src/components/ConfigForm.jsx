@@ -1,3 +1,4 @@
+// src/components/ConfigForm.jsx
 import { useState } from 'react';
 
 export default function ConfigForm({ data, onStart }) {
@@ -6,13 +7,12 @@ export default function ConfigForm({ data, onStart }) {
   const [selectedUnits, setUnits] = useState(new Set(units));
   const [difficulty, setDiff] = useState(new Set(['standard', 'advanced']));
 
-  const toggle = (setter, item) => {
+  const toggle = (setter, item) =>
     setter(prev => {
       const next = new Set(prev);
       next.has(item) ? next.delete(item) : next.add(item);
       return next;
     });
-  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -23,39 +23,76 @@ export default function ConfigForm({ data, onStart }) {
     onStart(shuffled.slice(0, count));
   };
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg space-y-6"
-    >
-      <h2 className="text-2xl font-bold text-gray-800 text-center">
-        Flashcard Settings
-      </h2>
+  // Inline style objects
+  const container = {
+    backgroundColor: '#fff',
+    padding: 32,
+    borderRadius: 16,
+    maxWidth: 640,
+    width: '100%',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 24
+  };
+  const title = {
+    fontSize: 24,
+    fontWeight: 700,
+    textAlign: 'center',
+    color: '#1f2937'
+  };
+  const section = { display: 'flex', flexDirection: 'column', gap: 8 };
+  const label = { marginBottom: 4, fontWeight: 600, color: '#374151' };
+  const input = {
+    padding: '8px 12px',
+    fontSize: 16,
+    borderRadius: 8,
+    border: '1px solid #d1d5db'
+  };
+  const checkboxLabel = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 8,
+    fontSize: 16
+  };
+  const btn = {
+    padding: '12px 24px',
+    fontSize: 18,
+    borderRadius: 12,
+    border: 'none',
+    cursor: 'pointer',
+    backgroundColor: '#4f46e5', // indigo
+    color: '#fff',
+    fontWeight: 600,
+    marginTop: 16,
+    alignSelf: 'center'
+  };
 
-      <div>
-        <label className="block text-gray-700 font-medium mb-2">
-          Number of cards
-        </label>
+  return (
+    <form onSubmit={handleSubmit} style={container}>
+      <h2 style={title}>Flashcard Settings</h2>
+
+      <div style={section}>
+        <label style={label}>Number of cards</label>
         <input
           type="number"
           min="1"
           max={data.length}
           value={count}
           onChange={e => setCount(+e.target.value)}
-          className="w-full border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
+          style={input}
         />
       </div>
 
-      <div>
-        <p className="font-medium text-gray-700 mb-2">Units</p>
-        <div className="grid grid-cols-2 gap-2">
+      <div style={section}>
+        <label style={label}>Units</label>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
           {units.map(u => (
-            <label key={u} className="flex items-center space-x-2">
+            <label key={u} style={checkboxLabel}>
               <input
                 type="checkbox"
                 checked={selectedUnits.has(u)}
                 onChange={() => toggle(setUnits, u)}
-                className="h-5 w-5"
               />
               <span>{u}</span>
             </label>
@@ -63,27 +100,23 @@ export default function ConfigForm({ data, onStart }) {
         </div>
       </div>
 
-      <div>
-        <p className="font-medium text-gray-700 mb-2">Difficulty</p>
-        <div className="flex space-x-4">
+      <div style={section}>
+        <label style={label}>Difficulty</label>
+        <div style={{ display: 'flex', gap: 12 }}>
           {['standard', 'advanced'].map(d => (
-            <label key={d} className="inline-flex items-center space-x-2">
+            <label key={d} style={checkboxLabel}>
               <input
                 type="checkbox"
                 checked={difficulty.has(d)}
                 onChange={() => toggle(setDiff, d)}
-                className="h-5 w-5"
               />
-              <span className="capitalize">{d}</span>
+              <span style={{ textTransform: 'capitalize' }}>{d}</span>
             </label>
           ))}
         </div>
       </div>
 
-      <button
-        type="submit"
-        className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition"
-      >
+      <button type="submit" style={btn}>
         Start Practice
       </button>
     </form>

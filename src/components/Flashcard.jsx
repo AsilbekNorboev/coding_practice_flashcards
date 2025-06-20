@@ -8,7 +8,7 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
   const [showHints, setShowHints] = useState(false);
   const [userCode, setUserCode] = useState('# Write your Python code here');
 
-  // Inline style objects for buttons
+  // Inline style objects for buttons and container
   const defaultBtnStyle = {
     padding: '12px 24px',
     fontSize: '18px',
@@ -19,21 +19,19 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
   };
   const solutionBtnStyle = {
     ...defaultBtnStyle,
-    backgroundColor: '#16a34a', // green-600
+    backgroundColor: '#16a34a',
     color: '#ffffff',
   };
   const navBtnStyle = {
     ...defaultBtnStyle,
-    backgroundColor: '#6366f1', // indigo-500
+    backgroundColor: '#6366f1',
     color: '#ffffff',
   };
 
   return (
-    <div style={{backgroundColor: '#ffffff', padding: 32, borderRadius: 16, maxWidth: 800, width: '100%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}>
-      {/* Question */}
-      <div style={{ marginBottom: 24 }}>
-        <ReactMarkdown>{card.questionText}</ReactMarkdown>
-      </div>
+    <div style={{ backgroundColor: '#ffffff', padding: 32, borderRadius: 16, maxWidth: 800, width: '100%', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+      {/* Question HTML */}
+      <div style={{ marginBottom: 24 }} dangerouslySetInnerHTML={{ __html: card.questionHTML }} />
 
       {/* Hints Toggle */}
       {card.hints && (
@@ -46,7 +44,7 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
           </button>
           {showHints && (
             <ul style={{ textAlign: 'left', paddingLeft: 20, color: '#374151' }}>
-              {card.hints.map((hint, i) => <li key={i}>{hint}</li>)}
+              {card.hints.map((hint, i) => <li key={i} dangerouslySetInnerHTML={{ __html: hint }} />)}
             </ul>
           )}
         </div>
@@ -61,21 +59,14 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
           extensions={[python()]}
           onChange={(value) => setUserCode(value)}
           theme="light"
-          basicSetup={{
-            lineNumbers: true,
-            highlightActiveLine: true,
-            indentOnInput: true,
-          }}
+          basicSetup={{ lineNumbers: true, highlightActiveLine: true, indentOnInput: true }}
           style={{ borderRadius: 8, backgroundColor: '#f9fafb' }}
         />
       </div>
 
       {/* Solution Toggle */}
       <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <button
-          onClick={() => setShowSol(s => !s)}
-          style={solutionBtnStyle}
-        >
+        <button onClick={() => setShowSol(s => !s)} style={solutionBtnStyle}>
           {showSol ? 'Hide Solution' : 'Show Solution'}
         </button>
       </div>
@@ -94,5 +85,5 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
         <button onClick={onNext} disabled={index + 1 === total} style={navBtnStyle}>Next</button>
       </div>
     </div>
-  );
+);
 }
