@@ -6,12 +6,12 @@ Currently this web application has these abilities:
 - Hints & Solutions: Toggleable hints and model solutions.
 - Navigation Controls: Prev/Next buttons and card index.
 - Copied the Codepath Styling for easier reading and understanding
+- implemented the SM-2 Algorithm so cards you struggle with reappear sooner, while the ones you know well get pushed farther out.
 ## WIP(WORK IN PROGRESS)
 
 Stuff I am working on
 - add a daily tracker, to keep track of what days I worked on learning
 - also track which questions i have done, so add a button 'completed', which adds to this list(keep count how many times i have done it also)
-- maybe have an algorithm where the questions asked are the ones where I haven't worked on as much
 
 What ChatGPT recommended:
 Spaced-Repetition Scheduling
