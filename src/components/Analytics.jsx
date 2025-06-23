@@ -1,6 +1,10 @@
 import React from 'react';
 import cardsData from '../data/flashcards.json';
 import { loadReviewHistory } from '../utils/storage';
+import { loadGameMeta } from '../utils/game';
+import Badges from './Badges';
+
+
 import {
   ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
@@ -113,6 +117,9 @@ export default function Analytics() {
             />
           </BarChart>
         </ResponsiveContainer>
+        {/* Badges */}
+      <h2 style={{ marginTop: 48 }}>Your Badges</h2>
+      <Badges />
       </div>
     </div>
   );
