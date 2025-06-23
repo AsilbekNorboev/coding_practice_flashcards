@@ -4,6 +4,8 @@ import CodeMirror from '@uiw/react-codemirror';
 import { python } from '@codemirror/lang-python';
 import { applySM2 } from '../utils/sm2';
 import { loadCardMeta, saveCardMeta } from '../utils/storage';
+import { logReviewEvent } from '../utils/storage';
+
 
 export default function Flashcard({ card, index, total, onNext, onPrev }) {
   if (!card) {
@@ -29,6 +31,7 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
   const solutionText = String((card.solutionCode || '').split('```').join(''));
 
   const rateRecall = quality => {
+    logReviewEvent(card.id, quality);
     const updated = applySM2({ repetitions: reps, interval, easiness: easy, nextReview }, quality);
     setReps(updated.repetitions);
     setInterval(updated.interval);

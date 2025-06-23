@@ -1,52 +1,69 @@
 // src/App.jsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ConfigForm from './components/ConfigForm';
 import Flashcard from './components/Flashcard';
+import Analytics from './components/Analytics.jsx'
 import cardsData from './data/flashcards.json';
 import { loadAllMeta } from './utils/storage';
 
 export default function App() {
-  // Load all cards and persisted metadata
-  const allCards = cardsData;
-  const meta     = loadAllMeta();
-  const today    = new Date().toISOString().split('T')[0];
+// Persistent metadata and card data
+const meta = loadAllMeta();
+const today = new Date().toISOString().split('T')[0];
 
-  // Filter only cards whose nextReview is today or earlier
-  const dueCards = allCards.filter(card => {
-    const next = meta[card.id]?.nextReview || card.nextReview;
-    return next <= today;
-  });
+// Only cards due for review
+const dueCards = cardsData.filter(card => {
+const next = meta[card.id]?.nextReview || card.nextReview;
+return next <= today;
+});
 
-  // State to hold the deck we’ll practice
-  const [deck, setDeck] = useState([]);
-  // Index of the currently-viewed card, or null if not started
-  const [viewing, setViewing] = useState(null);
+// App views: 'config' | 'study' | 'analytics'
+const [view, setView] = useState('config');
+const [deck, setDeck] = useState([]);
+const [viewing, setViewing] = useState(null);
 
-  // When the user submits the ConfigForm, we initialize the deck
-  const handleStart = (selectedCards) => {
-    setDeck(selectedCards);
-    setViewing(0);
-  };
+// Initialize deck when starting practice
+const handleStart = selectedCards => {
+setDeck(selectedCards);
+setViewing(0);
+setView('study');
+};
 
-  // Once the user has selected how many cards/units/etc,
-  // pass the dueCards into ConfigForm as the data source
-  if (viewing === null) {
-    return (
-      <ConfigForm
-        data={dueCards}
-        onStart={handleStart}
-      />
-    );
-  }
+// Navigate cards
+const handleNext = () => setViewing(v => Math.min(v + 1, deck.length - 1));
+const handlePrev = () => setViewing(v => Math.max(v - 1, 0));
 
-  // Otherwise show the Flashcard viewer for deck[viewing]
-  return (
-    <Flashcard
-      card={deck[viewing]}
-      index={viewing}
-      total={deck.length}
-      onNext={() => setViewing(v => Math.min(v + 1, deck.length - 1))}
-      onPrev={() => setViewing(v => Math.max(v - 1, 0))}
-    />
-  );
+// Render analytics view
+if (view === 'analytics') {
+return (
+<div style={{ padding: 16 }}>
+<button onClick={() => setView('config')} style={{ marginBottom: 16 }}>
+← Back </button> <Analytics /> </div>
+);
 }
+
+// Show config form
+if (view === 'config') {
+return ( <div>
+<button
+onClick={() => setView('analytics')}
+style={{ position: 'fixed', top: 16, right: 16 }}>
+View Analytics </button> <ConfigForm data={dueCards} onStart={handleStart} /> </div>
+);
+}
+
+// Study view: show flashcards
+return ( <div>
+<button
+onClick={() => setView('analytics')}
+style={{ position: 'fixed', top: 16, right: 16 }}>
+View Analytics </button> <Flashcard
+     card={deck[viewing]}
+     index={viewing}
+     total={deck.length}
+     onNext={handleNext}
+     onPrev={handlePrev}
+   /> </div>
+);
+}
+

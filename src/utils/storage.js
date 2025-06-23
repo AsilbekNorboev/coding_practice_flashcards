@@ -20,3 +20,23 @@ export function saveCardMeta(id, meta) {
   all[id] = { ...all[id], ...meta };
   localStorage.setItem('flashcards_meta', JSON.stringify(all));
 }
+
+
+/** Log a single review event */
+export function logReviewEvent(cardId, quality) {
+  const key = 'flashcards_history';
+  const raw = localStorage.getItem(key);
+  const history = raw ? JSON.parse(raw) : [];
+  history.push({
+    cardId,
+    quality,
+    timestamp: new Date().toISOString(),
+  });
+  localStorage.setItem(key, JSON.stringify(history));
+}
+
+/** Load all review events */
+export function loadReviewHistory() {
+  const raw = localStorage.getItem('flashcards_history');
+  return raw ? JSON.parse(raw) : [];
+}
