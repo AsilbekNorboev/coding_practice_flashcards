@@ -143,7 +143,24 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
           basicSetup={{ lineNumbers: true, highlightActiveLine: false }}
           style={{ borderRadius: 8, backgroundColor: '#f3f4f6', marginBottom: 24 }}
         />
-      )}
+        
+      )
+      }
+      {/* Rating Guide */}
+    <details style={{ marginBottom: 16, fontSize: 14, color: '#4b5563' }}>
+      <summary style={{ cursor: 'pointer', fontWeight: 600 }}>
+        How to choose your rating
+      </summary>
+      <ul style={{ paddingLeft: 20, marginTop: 8 }}>
+        <li><strong>Again</strong>: I couldn’t recall the answer at all.</li>
+        <li><strong>Hard</strong>: I remembered what the structure is but struggled. Had to look at the solution.</li>
+        <li><strong>Still Struggling</strong>: I got some details but needed hints.</li>
+        <li><strong>Easy</strong>: I recalled it with some effort. Had to debug often</li>
+        <li><strong>Very Easy</strong>: I recalled it instantly and confidently. Had to test my code first to make sure.</li>
+        <li><strong>Mastered</strong>: I could explain and apply it perfectly. Was able to code it quick and on the editor above.</li>
+      </ul>
+    </details>
+        
 
       {/* SM-2 Rating Buttons */}
       {showSol && (
@@ -179,11 +196,22 @@ export default function Flashcard({ card, index, total, onNext, onPrev }) {
 
       {/* Navigation */}
       <div style={{ textAlign: 'center' }}>
-        <button onClick={onPrev} disabled={index === 0} style={navBtn}>Prev</button>
+        <button onClick={() => { setShowSol(false); onPrev(); }} disabled={index === 0} style={navBtn}>
+          Prev
+        </button>
         <span style={{ margin: '0 12px', fontSize: 18, color: '#4b5563' }}>
           {index + 1} / {total}
         </span>
-        <button onClick={onNext} disabled={index + 1 === total} style={navBtn}>Next</button>
+       <button
+         onClick={() => {
+            setShowSol(false);
+            onNext();
+          }}
+          disabled={index + 1 === total}
+          style={navBtn}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
