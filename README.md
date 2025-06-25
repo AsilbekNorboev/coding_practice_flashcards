@@ -8,10 +8,15 @@ Currently this web application has these abilities:
 - Copied the Codepath Styling for easier reading and understanding
 - implemented the SM-2 Algorithm so cards you struggle with reappear sooner, while the ones you know well get pushed farther out.
 - Added Analytics: Review Quality Distribution, # of Reviews in the Last 7 days, and Per-Unit Progress(attempted/not attempted per unit). All of these are visual charts
+- Currently persists storage in LocalStorage in the user's browser, looking to move to supabase once website is live.
+
 ## WIP(WORK IN PROGRESS)
 
 Stuff I am working on
-- add a daily tracker, to keep track of what days I worked on learning
+- add a page header, page logo, page name,
+- add login auth
+- add supabase connection and store data there.
+- add a daily tracker, to keep track of what days I worked on learning -> maybe like a calendar
 - also track which questions i have done, so add a button 'completed', which adds to this list(keep count how many times i have done it also)
 
 What ChatGPT recommended:
