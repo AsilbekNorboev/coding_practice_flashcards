@@ -11,6 +11,9 @@ Currently this web application has these abilities:
 - Currently persists storage in LocalStorage in the user's browser, looking to move to supabase once website is live.
 - Google Authentication using Google Cloud Console and Firebase 
 - Vercel Deployment -> https://coding-practice-flashcards.vercel.app/
+- Vercel Analytics - > to track page views
+- Firestore DB for user data tracking
+
 
 
 ## WIP(WORK IN PROGRESS)

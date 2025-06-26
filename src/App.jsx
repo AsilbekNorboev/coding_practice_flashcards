@@ -7,7 +7,7 @@ import Profile     from './components/Profile';
 import Analytics   from './components/Analytics.jsx';
 import cardsData   from './data/flashcards.json';
 import toast       from 'react-hot-toast';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics as VercelAnalytics } from "@vercel/analytics/next"
 
 import settingIcon from './assets/images/setting_icon.png';
 
@@ -219,7 +219,7 @@ export default function App() {
         />
       </div>
       </div>
-              <Analytics />
+              <VercelAnalytics />
 
     </>
   );
