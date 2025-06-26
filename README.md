@@ -9,6 +9,9 @@ Currently this web application has these abilities:
 - implemented the SM-2 Algorithm so cards you struggle with reappear sooner, while the ones you know well get pushed farther out.
 - Added Analytics: Review Quality Distribution, # of Reviews in the Last 7 days, and Per-Unit Progress(attempted/not attempted per unit). All of these are visual charts
 - Currently persists storage in LocalStorage in the user's browser, looking to move to supabase once website is live.
+- Google Authentication using Google Cloud Console and Firebase 
+- Vercel Deployment -> https://coding-practice-flashcards.vercel.app/
+
 
 ## WIP(WORK IN PROGRESS)
 
