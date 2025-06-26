@@ -1,20 +1,24 @@
-import './index.css';
-
+// src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import { Toaster } from 'react-hot-toast';
 
+import './index.css';
+import App from './App';
+import { AuthProvider } from './contexts/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
-    <Toaster 
-      position="top-right" 
-      reverseOrder={false}
-      toastOptions={{
-        duration: 2000,
-        style: { fontSize: '16px' },
-      }}/>
+    <AuthProvider>
+      <App />
+      <Toaster 
+        position="top-right" 
+        reverseOrder={false}
+        toastOptions={{
+          duration: 2000,
+          style: { fontSize: '16px' },
+        }}
+      />
+    </AuthProvider>
   </React.StrictMode>
 );
