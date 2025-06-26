@@ -1,16 +1,13 @@
-import React from 'react';
+// src/components/Analytics.jsx
+import React, { useState, useEffect } from 'react';
 import cardsData from '../data/flashcards.json';
 import { loadReviewHistory } from '../utils/storage';
-import { loadGameMeta } from '../utils/game';
-import Badges from './Badges';
-
-
 import {
   ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid,
 } from 'recharts';
 
-// Custom labels for quality 0→5
+// Your custom labels in the same order as the quality scores 0→5
 const QUALITY_LABELS = [
   'Again',
   'Hard',
@@ -21,33 +18,34 @@ const QUALITY_LABELS = [
 ];
 
 export default function Analytics() {
-  const history = loadReviewHistory();
-  const attemptedIds = new Set(history.map(ev => ev.cardId));
+  // 1) Async load of history
+  const [history, setHistory] = useState(null);
 
-  // Build per-unit stats
-  const unitMap = {};
-  cardsData.forEach(card => {
-    if (!unitMap[card.unit]) {
-      unitMap[card.unit] = { unit: card.unit, total: 0, attempted: 0 };
-    }
-    unitMap[card.unit].total += 1;
-    if (attemptedIds.has(card.id)) {
-      unitMap[card.unit].attempted += 1;
-    }
-  });
-  const perUnit = Object.values(unitMap).map(u => ({
-    unit: u.unit,
-    attempted: u.attempted,
-    unattempted: u.total - u.attempted,
-  }));
+  useEffect(() => {
+    let cancelled = false;
+    loadReviewHistory()
+      .then(arr => {
+        if (!cancelled) setHistory(arr);
+      })
+      .catch(err => {
+        console.error('Failed to load review history', err);
+        if (!cancelled) setHistory([]);
+      });
+    return () => { cancelled = true; };
+  }, []);
 
-  // Quality distribution
+  // Show loading state
+  if (history === null) {
+    return <div style={{ padding: 32 }}>Loading analytics…</div>;
+  }
+
+  // 2) Quality distribution
   const qualityCounts = QUALITY_LABELS.map((label, q) => ({
     label,
     count: history.filter(ev => ev.quality === q).length,
   }));
 
-  // Last 7 days history
+  // 3) Daily reviews last 7 days
   const today = new Date();
   const past7 = Array.from({ length: 7 }).map((_, i) => {
     const d = new Date();
@@ -58,6 +56,23 @@ export default function Analytics() {
       reviews: history.filter(ev => ev.timestamp.startsWith(day)).length,
     };
   }).reverse();
+
+  // 4) Per-unit attempted vs unattempted
+  const attemptedIds = new Set(history.map(ev => String(ev.cardId)));
+
+  const unitMap = {};
+  cardsData.forEach(card => {
+    if (!unitMap[card.unit]) {
+      unitMap[card.unit] = { total: 0, attempted: 0, unit: card.unit };
+    }
+    unitMap[card.unit].total += 1;
+    if (attemptedIds.has(String(card.id))) unitMap[card.unit].attempted += 1;
+  });
+  const perUnit = Object.values(unitMap).map(u => ({
+    unit: u.unit,
+    attempted: u.attempted,
+    unattempted: u.total - u.attempted,
+  }));
 
   return (
     <div style={{ padding: 32, maxWidth: 800, margin: '0 auto' }}>
@@ -83,44 +98,26 @@ export default function Analytics() {
         </BarChart>
       </ResponsiveContainer>
 
-      <h2 style={{ marginTop: 48 }}>Per-Unit Progress</h2>
-      <div style={{ width: '90%', margin: '0 auto' }}>
-        <ResponsiveContainer width="100%" height={perUnit.length * 50 + 60}>
-          <BarChart
-            layout="vertical"
-            data={perUnit}
-            margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
-            barCategoryGap="20%"
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis type="number" />
-            <YAxis
-              dataKey="unit"
-              type="category"
-              width={140}
-              style={{ fontSize: 14 }}
-            />
-            <Tooltip />
-            <Bar
-              dataKey="unattempted"
-              stackId="a"
-              fill="#ef4444"
-              name="Not Attempted"
-              barSize={20}
-            />
-            <Bar
-              dataKey="attempted"
-              stackId="a"
-              fill="#10b981"
-              name="Attempted"
-              barSize={20}
-            />
-          </BarChart>
-        </ResponsiveContainer>
-        {/* Badges */}
-      <h2 style={{ marginTop: 48 }}>Your Badges</h2>
-      <Badges />
-      </div>
+      <h2 style={{ marginTop: 48 }}>Per‐Unit Progress</h2>
+      <ResponsiveContainer width="100%" height={perUnit.length * 40 + 50}>
+        <BarChart
+          layout="vertical"
+          data={perUnit}
+          margin={{ top: 20, right: 30, left: 100, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis type="number" />
+          <YAxis
+            dataKey="unit"
+            type="category"
+            width={120}
+            style={{ fontSize: 14 }}
+          />
+          <Tooltip />
+          <Bar dataKey="unattempted" stackId="a" fill="#ef4444" name="Not Attempted" />
+          <Bar dataKey="attempted"   stackId="a" fill="#10b981" name="Attempted" />
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
 }

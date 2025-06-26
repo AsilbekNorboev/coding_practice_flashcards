@@ -22,3 +22,89 @@ body {
   place-items: center;
   background-color: #ECE2D0;
 }
+/* ────────────────────────────────── */
+/* Full-width navbar                */
+/* ────────────────────────────────── */
+.app-nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 56px;               /* lock in the height */
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1000;              /* higher than header */
+  display: flex;
+  align-items: center;
+  padding: 2 2px;
+}
+
+
+
+/* Nav children positioning */
+.app-nav .nav-left { }
+.app-nav .nav-right {
+  margin-left: auto;
+  display: flex;
+  gap: 16px;
+}
+
+.app-nav button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.app-nav button:hover {
+  background: #4338ca;
+}
+.app-nav button:active {
+  background: #3730a3;
+}
+
+/* Centered page content */
+.app-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;       /* center it */
+  padding-top: 16px;    /* so content sits below the sticky nav */
+}
+
+/* ────────────────────────────────── */
+/* Sticky Level Bar                 */
+/* ────────────────────────────────── */
+.app-header {
+  position: sticky;
+  top: 56px;                  /* exactly the nav’s height */
+  left: 0;
+  width: 100vw;
+  background: #fafafa;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  z-index: 900;               /* just under the nav */
+  padding: 8px 24px;
+}
+.app-header .header-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.app-header .progress-bar-bg {
+  margin-top: 8px;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.app-header .progress-bar-fill {
+  height: 100%;
+  background: #10b981;
+}
+.nav-btn img {
+  vertical-align: middle;
+}
