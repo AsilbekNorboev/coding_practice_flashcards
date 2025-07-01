@@ -84,6 +84,22 @@ export default function App() {
     return () => { cancelled = true; };
   }, [user]);
 
+    // 4b) Also recompute due cards whenever a review runs
+  //     (i.e. whenever gameMeta changes, because SM-2 updates nextReview in storage)
+   useEffect(() => {
+     if (!user) return;
+     async function recompute() {
+       const meta  = await loadAllMeta();
+       const today = new Date().toISOString().slice(0,10);
+       setDueCards(
+         cardsData.filter(card => {
+           const next = meta[card.id]?.nextReview || card.nextReview;
+           return next <= today;
+         })
+       );
+     }
+     recompute();
+   }, [gameMeta]);  // run after each call to onUpdateGameMeta
   // 5) Handlers
   const handleStart = selected => {
     setDeck(selected);
